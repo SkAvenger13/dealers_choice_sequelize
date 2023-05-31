@@ -51,13 +51,41 @@ const syncAndSeed = async () => {
             name: 'Atmospheric House'
         });
 
+        howl.artistId = elderbrook.id;
+        noFun.artistId = lane8.id;
+        athena.artistId = trilucid.id;
+
+        howl.albumId = littleLoveAlbum.id;
+        noFun.albumId = noFunAlbum.id;
+        athena.albumId = athenaAlbum.id;
+
+        littleLoveAlbum.artistId = elderbrook.id;
+        noFunAlbum.artistId = lane8.id;
+        athenaAlbum.artistId = trilucid.id;
+
+        elderbrook.genreId = atmosphericHouse.id;
+        lane8.genreId = atmosphericHouse.id;
+        trilucid.genreId = atmosphericHouse.id;
+
+        await Promise.all([
+            howl.save(),
+            noFun.save(),
+            athena.save(),
+            littleLoveAlbum.save(),
+            noFunAlbum.save(),
+            athenaAlbum.save(),
+            elderbrook.save(),
+            lane8.save(),
+            trilucid.save()
+        ]);
+
         db.close();
 
     } catch (error) {
 
         console.log(error);
         db.close();
-        
+
     }
 };
 

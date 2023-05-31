@@ -1,8 +1,11 @@
 const Sequelize = require('sequelize');
 const {STRING, INTEGER, UUID, UUIDV4, DATEONLY} = Sequelize;
-const db = new Sequelize('postgres://localhost:5432/dealers_choice_sequelize');
+const db = new Sequelize(
+    'postgres://localhost:5432/dealers_choice_sequelize',
+    {logging: false}
+);
 
-const Artist = db.create('artist', {
+const Artist = db.define('artist', {
     id: {
         type: UUID,
         primaryKey: true,
@@ -17,7 +20,7 @@ const Artist = db.create('artist', {
     }
 });
 
-const Track = db.create('track', {
+const Track = db.define('track', {
     id: {
         type: UUID,
         primaryKey: true,
@@ -40,7 +43,7 @@ const Track = db.create('track', {
     }
 });
 
-const Album = db.create('album', {
+const Album = db.define('album', {
     id: {
         type: UUID,
         primaryKey: true,
@@ -62,7 +65,7 @@ const Album = db.create('album', {
     }
 });
 
-const Genre = db.create('genre', {
+const Genre = db.define('genre', {
     id: {
         type: UUID,
         primaryKey: true,
@@ -77,12 +80,17 @@ const Genre = db.create('genre', {
     }
 });
 
-//add in associations
 Artist.hasMany(Track, {as: 'artistTrack'});
 Track.belongsTo(Artist, {foreignKey: 'artistId'});
 
 Artist.hasMany(Album, {as: 'artistAlbum'});
 Album.belongsTo(Artist, {foreignKey: 'artistId'});
+
+Album.hasMany(Track, {as: 'albumTrack'});
+Track.belongsTo(Album, {foreignKey: 'albumId'});
+
+Genre.hasMany(Artist, {as: 'genre'});
+Artist.belongsTo(Genre, {foreignKey: 'genreId'});
 
 module.exports = {
     db,
